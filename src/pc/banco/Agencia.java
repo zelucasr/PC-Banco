@@ -5,21 +5,31 @@
  */
 package pc.banco;
 
+import Patterns.Observador;
 import java.util.ArrayList;
 
 /**
  *
  * @author Zé
  */
-public class Agencia {
+public class Agencia implements Observador{
     
     private Integer id;
     private Banco banco;
     private ArrayList<Conta> contas;
+    //private ArrayList<Depositos> operacoes; //TODO lista de operaçoes a serem realizadas ao final do dia (depositos)
     
     public Agencia(Banco banco){
         contas = new ArrayList();
         this.banco=banco;
+    }
+    
+    /**
+     * TODO
+     */
+    public void update()
+    {
+        //foreach(conta in operação)depositar valores
     }
 
     public Integer getId() {

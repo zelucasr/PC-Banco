@@ -5,8 +5,6 @@
  */
 package pc.banco;
 
-import java.util.Random;
-
 /**
  *
  * @author Zé
@@ -23,8 +21,10 @@ public class Terminal extends Thread {
     }
     
     //Método para acessar o terminal com determinado cartao e operacao
-    public boolean acessar(Cartao cartao, Cliente cliente, int op, double valor) throws InterruptedException{
+    public boolean acessar(Conta conta, Cliente cliente, int op, double valor) throws InterruptedException{
         setCurrentCliente(cliente);
+        setCurrentConta(conta); //TODO encontrar um jeito de obter a conta do cliente apartir do seu cartao
+        
         System.out.println("Cliente atual: "+currentCliente.getNome()+" em "+this.getName());
         
         switch(op){
@@ -36,19 +36,38 @@ public class Terminal extends Thread {
                 break;
         }
         
-        Random gerador = new Random();
-        Thread.sleep(gerador.nextInt(10000));
+        Thread.sleep(Regras.getRandMS());
         
         return true;
     }
     
-    public void transferencia(Conta outraConta, Banco b, Agencia ag, double v){
-        if(currentConta.getBanco().getId()==outraConta.getBanco().getId()){
-            currentConta.subtrair(v);
-            outraConta.adicionar(v);
-        }
+    public void transferencia(Conta outraConta, Banco b, Agencia ag, double v)
+    {
+        //testar se é do mesmo banco
+        if(currentConta.getBanco().getId()== outraConta.getBanco().getId()){
+            
+            //cliente quantidade (na conta)
+            int cqtd = currentConta.getClientsQTD();
+             
+            //valor total transferido no dia
+            double vtra = currentConta.getTransferenciaMAX(currentCliente);
+            boolean tmax = Regras.testarTransfereciaMAX(vtra, cqtd);
+            
+            //saldo maior que valor
+            boolean smqv = v <= currentConta.getSaldo();
+            
+            //testars se nao exede o valor maximo de transferencias diarias
+            if(tmax && smqv)
+            {
+                currentConta.subtrair(v);
+                
+                //TODO adicionar a lista de depositos na agencia
+                outraConta.adicionar(v); 
+            }
+            
+        }//testars se nao exede o valor maximo de transferencias diarias para outros bancos
         else{
-            currentConta.subtrair(v+10);//10 da regra de negócio
+            currentConta.subtrair(v+Regras.getTransferenciaTAX());
             outraConta.adicionar(v);
         }
     }

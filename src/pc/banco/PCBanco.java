@@ -38,7 +38,7 @@ public class PCBanco {
         conta1.setNumero("1");
         agencia1.addConta(conta1);
         
-        while(true){
+        while(true){//TODO fixar isso para uma conta
             terminal1.acessar(cartao1, cliente1, 1, 1);
         }
         

@@ -5,13 +5,13 @@
  */
 package pc.banco;
 
+import Patterns.Observado;
 import java.util.ArrayList;
-
 /**
  *
  * @author Zé
  */
-public class Banco {
+public class Banco extends Observado implements Runnable{
     
     private String nome;
     private int id;
@@ -20,7 +20,10 @@ public class Banco {
     private ArrayList<Cliente> cliente;
     private static Banco banco = new Banco();
     
+    
+    
     private Banco(){
+        super();
         agencias = new ArrayList();
         emAtendimento = new ArrayList();
     }
@@ -59,6 +62,14 @@ public class Banco {
     
     public synchronized static Banco getInstance(){
         return banco;
+    }
+    
+    /**
+     * TODO
+     */
+    public void run()
+    {
+        
     }
     
 }
