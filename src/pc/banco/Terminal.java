@@ -11,37 +11,42 @@ package pc.banco;
  */
 public class Terminal extends Thread {
     
+    private Banco banco;
     private Cliente currentCliente;
     private Conta currentConta;
     
     public void run(){
-        currentCliente = new Cliente();
-        currentConta = new Conta();
+        currentCliente = null;
+        currentConta = null;
         //System.out.println("haha");
     }
     
     //Método para acessar o terminal com determinado cartao e operacao
-    public boolean acessar(Conta conta, Cliente cliente, int op, double valor) throws InterruptedException{
-        setCurrentCliente(cliente);
-        setCurrentConta(conta); //TODO encontrar um jeito de obter a conta do cliente apartir do seu cartao
+    public boolean acessar(Cliente cliente, String agenciaID, String contaID, int op, double valor) throws InterruptedException{
         
-        System.out.println("Cliente atual: "+currentCliente.getNome()+" em "+this.getName());
-        
-        switch(op){
-            case 0:
-                //saque();
-                break;
-            case 1:
-                //deposito();
-                break;
+        synchronized(this)
+        {
+            if(banco.getInstance().verificarAtendimento(cliente) > 0) 
+            {
+                System.out.println(this.getName() + ": " + cliente.getNome() + " tentou acessar novamente");
+                return false;
+            }
+            else
+            {
+                setCurrentCliente(cliente);
+                Agencia agencia = banco.getInstance().getAgencia(agenciaID);
+                Conta conta = agencia.getConta(contaID);
+                
+                setCurrentConta(conta);
+                System.out.println("Cliente atual: "+currentCliente.getNome()+" em "+this.getName());
+            }
         }
         
         Thread.sleep(Regras.getRandMS());
-        
         return true;
     }
     
-    public void transferencia(Conta outraConta, Banco b, Agencia ag, double v)
+    public synchronized void transferencia(Conta outraConta, Banco b, Agencia ag, double v)
     {
         //testar se é do mesmo banco
         if(currentConta.getBanco().getId()== outraConta.getBanco().getId()){

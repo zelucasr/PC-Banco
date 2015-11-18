@@ -16,8 +16,9 @@ public class Conta implements Observador{
     
     private Banco banco;
     private String numero;
+    private String senha;
     private ArrayList<Cliente> clients;
-    private ArrayList<Cartao> cartoes;
+    private ArrayList<String> cartoes;
     
     //listas a baixo precisam ser zeradas ao final do dia
     private ArrayList<Integer> retiradaQTD;
@@ -31,7 +32,6 @@ public class Conta implements Observador{
     public Conta(){
         clients = new ArrayList();
         setSaldo(0);
-        setSolidario(false);
     }
 
     /**
@@ -116,15 +116,21 @@ public class Conta implements Observador{
     }
     
     public void addCliente(Cliente alguem){
-        if(clients.size()<3){
-            clients.add(alguem);
-            if(clients.size()>1){
-                setSolidario(true);//TODO remover
-            }
+        if(Regras.testarClientsQTD(clients.size()))
+        {
+            alguem.addCartao(addCartao());
+            this.addCliente(alguem);
+            alguem.addConta(this);
         }
-        else{
-            System.out.println("A conta já possui 3 clientes associados");
-        }
+        else System.out.println("A conta possui o maximo de clientes associaveis");
+        
+    }
+    
+    private String addCartao()
+    {        
+        String temp = numero + "-" + clients.size();
+        cartoes.add(temp);
+        return temp;
     }
 
     public void subtrair(double v) {

@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 public class Agencia implements Observador{
     
-    private Integer id;
+    private String id;
     private Banco banco;
     private ArrayList<Conta> contas;
     //private ArrayList<Depositos> operacoes; //TODO lista de operaçoes a serem realizadas ao final do dia (depositos)
@@ -32,16 +32,19 @@ public class Agencia implements Observador{
         //foreach(conta in operação)depositar valores
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
     
     public void addConta(Conta conta){
         contas.add(conta);
+    }
+    
+    public Conta getConta(String id) {
+        for(Conta conta : contas)
+            if(conta.getNumero().equals(id)) return conta;
+        
+        return null;
     }
     
 }

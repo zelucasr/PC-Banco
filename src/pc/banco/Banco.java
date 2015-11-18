@@ -17,7 +17,7 @@ public class Banco extends Observado implements Runnable{
     private int id;
     private ArrayList<Agencia> agencias;
     private ArrayList<Cliente> emAtendimento;
-    private ArrayList<Cliente> cliente;
+    private ArrayList<Cliente> clientes;
     private static Banco banco = new Banco();
     
     
@@ -26,6 +26,11 @@ public class Banco extends Observado implements Runnable{
         super();
         agencias = new ArrayList();
         emAtendimento = new ArrayList();
+    }
+    
+    public synchronized int verificarAtendimento(Cliente cliente)
+    {
+        return clientes.indexOf(cliente);
     }
 
     public String getNome() {
@@ -36,13 +41,13 @@ public class Banco extends Observado implements Runnable{
         this.nome = nome;
     }
 
-    public ArrayList<Agencia> getAgencias() {
-        return agencias;
+    public Agencia getAgencia(String id) {
+        for(Agencia agencia : agencias)
+            if(agencia.getId().equals(id)) return agencia;
+        
+        return null;
     }
 
-    public void setAgencias(ArrayList<Agencia> agencias) {
-        this.agencias = agencias;
-    }
 
     public ArrayList<Cliente> getEmAtendimento() {
         return emAtendimento;

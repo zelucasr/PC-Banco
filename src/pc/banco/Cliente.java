@@ -15,23 +15,33 @@ public class Cliente {
     
     private String nome;
     private String cpf;
-    private ArrayList<Cartao> cartoes;
+    private ArrayList<String> cartoes;
     private ArrayList<Conta> contas;
 
+    public Cliente(String nome, String cpf)
+    {
+        this.nome = nome;
+        this.cpf = cpf;
+        cartoes = new ArrayList<>();
+        contas = new ArrayList<>();
+    }
+    
     public String getNome() {
         return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
     }
 
     public String getCpf() {
         return cpf;
     }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
+    
+    public void addConta(Conta conta)
+    {
+        this.contas.add(conta);
+    }
+    
+    public void addCartao(String cartao)
+    {
+        this.cartoes.add(cartao);
     }
     
 }

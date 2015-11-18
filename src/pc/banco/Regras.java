@@ -21,7 +21,7 @@ public class Regras
     private static double transferenciaOutroMAX = 3000;
     private static int randMS = 5000;
     
-    private static boolean testarClientsQTD(int qtd)
+    public static boolean testarClientsQTD(int qtd)
     {
         if(qtd <= clientsQTD) return true;
         else return false;
