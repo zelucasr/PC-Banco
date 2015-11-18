@@ -99,13 +99,6 @@ public class Conta implements Observador{
     public void setNumero(String numero) {
         this.numero = numero;
     }
-    public Boolean getSolidario() {
-        return solidario;
-    }
-
-    public void setSolidario(Boolean solidario) {
-        this.solidario = solidario;
-    }
 
     public double getSaldo() {
         return saldo;
@@ -115,15 +108,16 @@ public class Conta implements Observador{
         this.saldo = saldo;
     }
     
-    public void addCliente(Cliente alguem){
+    public boolean addCliente(Cliente alguem){
         if(Regras.testarClientsQTD(clients.size()))
         {
             alguem.addCartao(addCartao());
-            this.addCliente(alguem);
+            this.clients.add(alguem);
             alguem.addConta(this);
+            return true;
         }
         else System.out.println("A conta possui o maximo de clientes associaveis");
-        
+        return false;
     }
     
     private String addCartao()

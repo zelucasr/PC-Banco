@@ -11,7 +11,7 @@ import java.util.ArrayList;
  *
  * @author Alvaro
  */
-public class Observado 
+public class Observado extends Thread
 {
     ArrayList<Observador> observadores;
     

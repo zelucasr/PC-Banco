@@ -26,7 +26,7 @@ public class Terminal extends Thread {
         
         synchronized(this)
         {
-            if(banco.getInstance().verificarAtendimento(cliente) > 0) 
+            if(banco.getInstance().getEmAtendimento(cliente) > 0) 
             {
                 System.out.println(this.getName() + ": " + cliente.getNome() + " tentou acessar novamente");
                 return false;
@@ -38,6 +38,7 @@ public class Terminal extends Thread {
                 Conta conta = agencia.getConta(contaID);
                 
                 setCurrentConta(conta);
+                banco.getInstance().setEmAtendimento(cliente);
                 System.out.println("Cliente atual: "+currentCliente.getNome()+" em "+this.getName());
             }
         }

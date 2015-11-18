@@ -11,10 +11,11 @@ import java.util.ArrayList;
  *
  * @author Zé
  */
-public class Banco extends Observado implements Runnable{
+public class Banco extends Observado
+{
     
     private String nome;
-    private int id;
+    private String id;
     private ArrayList<Agencia> agencias;
     private ArrayList<Cliente> emAtendimento;
     private ArrayList<Cliente> clientes;
@@ -26,11 +27,6 @@ public class Banco extends Observado implements Runnable{
         super();
         agencias = new ArrayList();
         emAtendimento = new ArrayList();
-    }
-    
-    public synchronized int verificarAtendimento(Cliente cliente)
-    {
-        return clientes.indexOf(cliente);
     }
 
     public String getNome() {
@@ -48,25 +44,33 @@ public class Banco extends Observado implements Runnable{
         return null;
     }
 
-
-    public ArrayList<Cliente> getEmAtendimento() {
-        return emAtendimento;
+    /**
+     * este metodo é usado pra verificar se o cliente esta na fila de clientes em atendimento
+     * @param cliente o cliente a ser verificado
+     * @return -1 caso o cliente nao esteja sendo atendido ou ou indice caso contrario
+     */
+    public synchronized int getEmAtendimento(Cliente cliente) {
+        return clientes.indexOf(cliente);
     }
 
-    public void setEmAtendimento(ArrayList<Cliente> emAtendimento) {
-        this.emAtendimento = emAtendimento;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    /**
+     * metodo usado para adicionar o cliente na lista de clientes sendo atendidos
+     * @param cliente o cliente a ser adicionado
+     */
+    public synchronized void setEmAtendimento(Cliente cliente) {
+        this.emAtendimento.add(cliente);
     }
     
-    public synchronized static Banco getInstance(){
+    public synchronized static Banco getInstance()
+    {
         return banco;
+        
+    }
+    
+    
+    public void addCliente(Cliente cliente)
+    {
+        clientes.add(cliente);
     }
     
     /**
